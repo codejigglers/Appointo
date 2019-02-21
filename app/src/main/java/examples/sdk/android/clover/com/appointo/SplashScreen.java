@@ -50,7 +50,7 @@ public class SplashScreen extends AppCompatActivity {
       @Override
       protected Integer doInBackground(String... strings) {
         try {
-          Thread.sleep(10000);
+          Thread.sleep(1000);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
