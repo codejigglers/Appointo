@@ -11,7 +11,8 @@
                                         android:fitsSystemWindows="true">
 
   <LinearLayout android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
 
     <FrameLayout android:layout_width="wrap_content"
@@ -24,6 +25,7 @@
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:orientation="vertical"
+                  android:visibility="gone"
                   android:id="@+id/no_appointment_view">
 
       <com.airbnb.lottie.LottieAnimationView
@@ -49,6 +51,42 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_input_add"
+            app:elevation="6dp"
+            app:fabSize="auto"
+            android:layout_gravity="end|bottom"
+            app:pressedTranslationZ="20dp"
+            tools:srcCompat="@tools:sample/backgrounds/scenic"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+      </android.support.constraint.ConstraintLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:id="@+id/appointment_view">
+
+
+      <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
+                                                   android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:id="@+id/appointment_recyclerview">
+
+
+        </android.support.v7.widget.RecyclerView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@android:drawable/ic_input_add"
