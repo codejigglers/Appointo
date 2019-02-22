@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import com.airbnb.lottie.LottieAnimationView;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -77,6 +78,9 @@ public class SplashScreen extends AppCompatActivity {
     ImageView img = (ImageView)findViewById(R.id.imgview);
     Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_out);
     img.startAnimation(aniFade);
+    View view = findViewById(R.id.lottieAnimationView);
+    view.startAnimation(aniFade);
+
   }
 
 }

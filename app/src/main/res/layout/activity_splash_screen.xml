@@ -4,7 +4,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:background="#02DED4"
+             android:background="#6DB2D3CE"
              tools:context=".SplashScreen">
 
   <!-- The primary full-screen view. This can be replaced with whatever view
@@ -17,7 +17,7 @@
       app:lottie_autoPlay="true"
       app:lottie_loop="true"
       android:layout_gravity="center"
-      app:lottie_fileName="animation.json"
+      app:lottie_fileName="splash.json"
       android:layout_marginTop="164dp"
       app:layout_constraintTop_toTopOf="parent"
       android:id="@+id/lottieAnimationView"
