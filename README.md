@@ -1,6 +1,6 @@
 # Appointment app integration with Gmail
 
-# Flow of of login/ logout user case in app
+# Flow of signin/ signout use case in app
 * Profile activity is launcher activity
 * If user has not signed in with gmail ProfileActivity redirects to LoginActivity for Login with Gmail.
 * Once users is signedIn with gmail SignInActivity returns following userInformation to Profile Activity
