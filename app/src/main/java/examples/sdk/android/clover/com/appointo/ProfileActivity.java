@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -71,6 +72,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (data == null) {
+            return;
+        }
         final String userName = data.getStringExtra(LoginActivity.USER_NAME);
         final String email = data.getStringExtra(LoginActivity.EMAIL);
         final String imageUri = data.getStringExtra(LoginActivity.IMAGE_URL);

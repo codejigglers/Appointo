@@ -6,25 +6,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LoginActivity"
-    android:background="@color/background">
+    tools:context=".LoginActivity">
 
     <TextView
         android:id="@+id/loginTextView"
         android:layout_width="match_parent"
         android:layout_marginTop="150dp"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
+        android:textStyle="bold|italic"
+        android:textSize="20sp"
         android:gravity="center"
-        android:textColor="@color/textColor"
+        android:textColor="@color/colorPrimary"
         android:text="Please login using your google account" />
 
     <ImageButton
         android:id="@+id/gmailLoginButton"
-        android:layout_marginTop="30dp"
-        android:layout_height="100dp"
-        android:layout_width="100dp"
+        android:layout_marginTop="40dp"
+        android:layout_height="80dp"
+        android:layout_width="80dp"
         android:layout_gravity="center"
         android:scaleType="fitXY"
+        android:background="@android:color/transparent"
         app:srcCompat="@drawable/gmail" />
 </LinearLayout>
