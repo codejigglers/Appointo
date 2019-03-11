@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "74151282380",
+    "firebase_url": "https://appointmentapp-232304.firebaseio.com",
+    "project_id": "appointmentapp-232304",
+    "storage_bucket": "appointmentapp-232304.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74151282380:android:d76f69f13aecdbe4",
+        "android_client_info": {
+          "package_name": "examples.sdk.android.clover.com.appointo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "74151282380-fpi2bma0j4pe17ts8kr7cfefgdoqaqjn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoypQM4gNRIsnL1QZsgYBhcCVMDivBclg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

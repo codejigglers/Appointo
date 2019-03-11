@@ -2,7 +2,6 @@ package examples.sdk.android.clover.com.appointo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -15,18 +14,76 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private UserInformation userInformation;
+    private static String TAG = "ProfileActivity";
+    List<UserLocation> userLocationList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initializeFirebase();
         setContentView(R.layout.activity_main);
         login();
         Button signOutButton = findViewById(R.id.signoutButton);
         signOutButton.setOnClickListener(this);
+
+    }
+
+    private void initializeFirebase() {
+        FirebaseApp.initializeApp(this);
+        final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference professorLocationDBReference = mDatabase.getReference();
+        professorLocationDBReference.child("Professors").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange");
+                updateUserLocationDataFromFirebase(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void updateUserLocationDataFromFirebase(DataSnapshot dataSnapshot) {
+        Log.d(TAG, "children count: " + dataSnapshot.getChildrenCount());
+        userLocationList = new ArrayList<>();
+
+        for (DataSnapshot ds: dataSnapshot.getChildren()) {
+            Map<String, Object> valueMap = (HashMap) ds.getValue();
+            UserLocation userLocation = new UserLocation();
+            userLocation.setProfessorName((String)valueMap.get("ProfessorName"));
+            userLocation.setLocationName((String)valueMap.get("LocationName"));
+            userLocation.setLongitude((Long)valueMap.get("Longitude"));
+            userLocation.setLatitude((Long)valueMap.get("Latitude"));
+            userLocationList.add(userLocation);
+        }
+
+        Log.d(TAG, "userLocationList size: " + userLocationList.size());
+        printProfessorNames();
+    }
+
+    public void printProfessorNames() {
+        Log.d(TAG, "Professor Names");
+        for (UserLocation userLocation: userLocationList) {
+            Log.d(TAG, userLocation.professorName);
+        }
     }
 
     @Override
@@ -71,7 +128,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) {
             return;
         }
