@@ -15,4 +15,21 @@
   <string name="nav_header_subtitle">android.studio@android.com</string>
   <string name="nav_header_desc">Navigation header</string>
   <string name="action_settings">Settings</string>
+  <string name="accounts">Accounts</string>
+  <string name="description_add">Add Calendar</string>
+  <string name="summary">Title</string>
+  <string name="summary_hint">Enter the calendar title</string>
+  <string name="cancel">Cancel</string>
+  <string name="save">Save</string>
+  <string name="icon_desc">Application icon</string>
+  <string name="title_separator_desc">Title separator</string>
+  <string name="refresh">Refresh</string>
+  <string name="batchadd">Copy Calendar x3 (Batch)</string>
+  <string name="edit">Edit Calendar</string>
+  <string name="delete">Delete Calendar</string>
+  <string name="delete_title">Delete Calendar?</string>
+  <string name="yes">Yes</string>
+  <string name="no">No</string>
+  <string name="error">Error</string>
+  <string name="error_format">[Error] %s</string>
 </resources>

@@ -4,7 +4,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:background="#6DB2D3CE"
+             android:background="#B2D3CE"
              tools:context=".SplashScreen">
 
   <!-- The primary full-screen view. This can be replaced with whatever view
