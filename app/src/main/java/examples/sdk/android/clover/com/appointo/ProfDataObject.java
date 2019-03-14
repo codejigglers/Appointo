@@ -1,6 +1,8 @@
 package examples.sdk.android.clover.com.appointo;
 
-public class ProfDataObject {
+import java.io.Serializable;
+
+public class ProfDataObject implements Serializable {
 
   String name;
   String email;

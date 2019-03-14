@@ -91,6 +91,7 @@
                 android:layout_weight="1"
                 android:text="MAP"
                 android:paddingLeft="20dp"
+                android:id="@+id/map"
                 android:textStyle="bold"
                 android:textSize="18dp"
                 android:textColor="#147759"

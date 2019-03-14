@@ -1,6 +1,9 @@
 package examples.sdk.android.clover.com.appointo;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.ViewHolder> {
 
@@ -53,6 +57,19 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         appCompatActivity.onDeletePress(element.getId());
       }
     });
+
+    viewHolder.map.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        String lat = profData.get(element.name).getLatitude();
+        String longi = profData.get(element.name).getLongitude();
+        String uri = String.format(Locale.ENGLISH, "geo:%f,%f", Float.parseFloat(lat), Float.parseFloat(longi));
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        Activity activity = (Activity) appCompatActivity;
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.getApplicationContext().startActivity(intent);
+      }
+    });
   }
 
   @Override
@@ -68,9 +85,11 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     TextView day;
     ImageView imageView;
     TextView delete;
+    TextView map;
 
     public ViewHolder(@NonNull View itemView) {
       super(itemView);
+      map = (TextView) itemView.findViewById(R.id.map);
       name = (TextView) itemView.findViewById(R.id.profName);
       time = (TextView) itemView.findViewById(R.id.appTime);
       date = (TextView) itemView.findViewById(R.id.appDate);

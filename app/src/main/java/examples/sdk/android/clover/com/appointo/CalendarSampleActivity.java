@@ -30,7 +30,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -64,8 +63,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,6 +80,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -94,7 +92,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public final class CalendarSampleActivity extends AppCompatActivity implements AppointmentClickListener, DialogFragmentListener{
+public final class CalendarSampleActivity extends AppCompatActivity implements AppointmentClickListener, DialogFragmentListener {
 
   private static final Level LOGGING_LEVEL = Level.OFF;
 
@@ -272,6 +270,7 @@ public final class CalendarSampleActivity extends AppCompatActivity implements A
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(CalendarSampleActivity.this, BookEvent.class);
+        intent.putExtra(Intents.PROF_DATA, (Serializable) profData);
         startActivity(intent);
 //        addEvent(client);
       }
@@ -281,6 +280,7 @@ public final class CalendarSampleActivity extends AppCompatActivity implements A
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(CalendarSampleActivity.this, BookEvent.class);
+        intent.putExtra(Intents.PROF_DATA, (Serializable) profData);
         startActivity(intent);
 //        addEvent(client);
       }
@@ -320,6 +320,9 @@ public final class CalendarSampleActivity extends AppCompatActivity implements A
 
   public void showLoader() {
     //drawerLayout.getBackground().setAlpha(127);
+    if (loadingFragment.isAdded()) {
+      return;
+    }
     fm.setVisibility(View.VISIBLE);
     ft = getSupportFragmentManager().beginTransaction();
     ft.add(R.id.loader, loadingFragment, "MyLoader").commit();
@@ -331,7 +334,7 @@ public final class CalendarSampleActivity extends AppCompatActivity implements A
     HashMap<String, String> dayMap = new HashMap<>();
     dayMap.put("Mon", "Monday");
     dayMap.put("Tue", "Tuesday");
-    dayMap.put("Wed", "Wednesday");
+    dayMap.put("Wed", "Wed");
     dayMap.put("Thu", "Thursday");
     dayMap.put("Fri", "Friday");
     dayMap.put("Sat", "Saturday");
@@ -432,9 +435,13 @@ public final class CalendarSampleActivity extends AppCompatActivity implements A
   // Method to change the text status
   public void changeTextStatus(boolean isConnected) {
     if (isConnected) {
-      Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_LONG).show();
+      String action;
+
     } else {
-      Toast.makeText(getApplicationContext(), "Not Connected", Toast.LENGTH_LONG).show();
+      Intent intent = new Intent(CalendarSampleActivity.this, BrokenActivity.class);
+      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
+      startActivity(intent);
+      finish();
     }
   }
 
@@ -442,6 +449,7 @@ public final class CalendarSampleActivity extends AppCompatActivity implements A
   protected void onPause() {
     super.onPause();
     MyApplication.activityPaused();
+    setIntent(new Intent());
   }
 
   class FetchEvents extends AsyncTask<com.google.api.services.calendar.Calendar, Void, List<Event>> {
@@ -530,26 +538,26 @@ public final class CalendarSampleActivity extends AppCompatActivity implements A
   }
 
 
-  public void addEvent(final com.google.api.services.calendar.Calendar service) {
+  public void addEvent(final com.google.api.services.calendar.Calendar service, String desc, String summary, String startDateTimes, String endDateTimes, String email) {
     final Event event = new Event()
-        .setSummary("APPOINTO: Appointment with Ram Eskafi")
+        .setSummary(summary)
         .setLocation("Santa Clara University")
-        .setDescription("About Mobile Project");
+        .setDescription(desc);
 
-    DateTime startDateTime = new DateTime("2019-03-11T09:00:00-07:00");
+    DateTime startDateTime = new DateTime(startDateTimes);
     EventDateTime start = new EventDateTime()
         .setDateTime(startDateTime)
         .setTimeZone("America/Los_Angeles");
     event.setStart(start);
 
-    DateTime endDateTime = new DateTime("2019-03-11T09:00:00-09:00");
+    DateTime endDateTime = new DateTime(endDateTimes);
     EventDateTime end = new EventDateTime()
         .setDateTime(endDateTime)
         .setTimeZone("America/Los_Angeles");
     event.setEnd(end);
 
     EventAttendee[] attendees = new EventAttendee[]{
-        new EventAttendee().setEmail("vardaan.gupta27@gmail.com"),
+        new EventAttendee().setEmail(email),
     };
     event.setAttendees(Arrays.asList(attendees));
 
@@ -596,8 +604,6 @@ public final class CalendarSampleActivity extends AppCompatActivity implements A
         fetchEvents(service);
       }
     }.execute(a);
-
-    Log.i("VARDAN", "VARDAB");
   }
 
   void showGooglePlayServicesAvailabilityErrorDialog(final int connectionStatusCode) {
@@ -632,6 +638,23 @@ public final class CalendarSampleActivity extends AppCompatActivity implements A
     super.onResume();
     if (checkGooglePlayServicesAvailable() && isConnected) {
       haveGooglePlayServices();
+    }
+    if (getIntent().hasExtra(Intents.END_TIME)) {
+      String descrip = getIntent().getStringExtra(Intents.DESCRIPTION);
+      String start = getIntent().getStringExtra(Intents.START_TIME);
+      String end = getIntent().getStringExtra(Intents.END_TIME);
+      String title = getIntent().getStringExtra(Intents.TITLE);
+      String date = getIntent().getStringExtra(Intents.DATE);
+      String email = getIntent().getStringExtra(Intents.EMAIL);
+
+      //2019-03-11T09:00:00-07:00
+      String startDateTime = date.split("-")[2] + "-" + date.split("-")[0] + "-" + date.split("-")[1] +
+                             "T09:00:00-" + start;
+      String endDateTime = date.split("-")[2] + "-" + date.split("-")[0] + "-" + date.split("-")[1] +
+                           "T09:00:00-" + end;
+      removeLoader();
+      addEvent(client, descrip, title, startDateTime, endDateTime, email);
+
     }
   }
 
@@ -700,13 +723,6 @@ public final class CalendarSampleActivity extends AppCompatActivity implements A
         }
         break;
     }
-  }
-
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    MenuInflater inflater = getMenuInflater();
-    inflater.inflate(R.menu.main_menu, menu);
-    return super.onCreateOptionsMenu(menu);
   }
 
   @Override

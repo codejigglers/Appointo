@@ -94,7 +94,7 @@ public class CalenderActivity extends AppCompatActivity implements View.OnClickL
     GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
     if (acct != null) {
       String personName = acct.getDisplayName();
-      Toast.makeText(getApplicationContext(), personName, Toast.LENGTH_LONG).show();
+      //Toast.makeText(getApplicationContext(), personName, Toast.LENGTH_LONG).show();
       Intent intent = new Intent(CalenderActivity.this, CalendarSampleActivity.class);
       intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
       startActivityForResult(intent, 2);

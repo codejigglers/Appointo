@@ -18,7 +18,8 @@
       android:supportsRtl="true"
       android:theme="@style/AppTheme"
       android:usesCleartextTraffic="true">
-
+    <activity android:name=".BrokenActivity">
+    </activity>
     <activity android:name=".BookEvent">
     </activity>
     <activity
@@ -44,9 +45,9 @@
         android:name=".ConnectionReceiver"
         android:enabled="true">
       <intent-filter>
-        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-        <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-        <action android:name="android.net.wifi.STATE_CHANGE" />
+        <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+        <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
+        <action android:name="android.net.wifi.STATE_CHANGE"/>
       </intent-filter>
     </receiver>
     <!--
