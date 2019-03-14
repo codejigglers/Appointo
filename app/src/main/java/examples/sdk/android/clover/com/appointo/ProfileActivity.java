@@ -26,6 +26,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import examples.sdk.android.clover.com.appointo.sqlite.SQLiteHelper;
+import examples.sdk.android.clover.com.appointo.sqlite.User;
+
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private UserInformation userInformation;
@@ -36,11 +39,24 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeFirebase();
+        initializeSQLite();
         setContentView(R.layout.activity_main);
         login();
         Button signOutButton = findViewById(R.id.signoutButton);
         signOutButton.setOnClickListener(this);
+    }
 
+    private void initializeSQLite() {
+        String pic = "pic";
+        final User dummyUser = new User("user_name",
+                "email_id", "college_Id", pic.getBytes());
+        SQLiteHelper sqLiteHelper = SQLiteHelper.getInstance(this);
+        sqLiteHelper.addOrUpdateUser(dummyUser);
+        List<User> users = sqLiteHelper.getAllData();
+        for (User user: users) {
+            Log.d(TAG, "userName: " + user.getUserName());
+            Log.d(TAG, "emailId: " + user.getEmailId());
+        }
     }
 
     private void initializeFirebase() {
