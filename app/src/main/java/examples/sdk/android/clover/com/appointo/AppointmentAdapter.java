@@ -63,9 +63,9 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
       public void onClick(View v) {
         String lat = profData.get(element.name).getLatitude();
         String longi = profData.get(element.name).getLongitude();
-        String uri = String.format(Locale.ENGLISH, "geo:%f,%f", Float.parseFloat(lat), Float.parseFloat(longi));
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         Activity activity = (Activity) appCompatActivity;
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+            Uri.parse("https://www.google.com/maps/search/" + lat + ",+" + longi + "/@" + lat + "," + longi + ",17z"));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.getApplicationContext().startActivity(intent);
       }

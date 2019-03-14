@@ -32,4 +32,5 @@
   <string name="no">No</string>
   <string name="error">Error</string>
   <string name="error_format">[Error] %s</string>
+  <string name="title_activity_maps">Map</string>
 </resources>
