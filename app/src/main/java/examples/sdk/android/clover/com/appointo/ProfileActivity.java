@@ -1,11 +1,15 @@
 package examples.sdk.android.clover.com.appointo;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -21,6 +25,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,13 +42,19 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private UserInformation userInformation;
     private static String TAG = "ProfileActivity";
     List<UserLocation> userLocationList = new ArrayList<>();
+    private final int GOOGLE_SIGN_IN_REQUEST = 1;
+    private final int REQUEST_LOAD_IMG = 2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         initializeFirebase();
         initializeSQLite();
+
         setContentView(R.layout.activity_main);
+        initializePhotoPicker();
         login();
         Button signOutButton = findViewById(R.id.signoutButton);
         signOutButton.setOnClickListener(this);
@@ -57,6 +71,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             Log.d(TAG, "userName: " + user.getUserName());
             Log.d(TAG, "emailId: " + user.getEmailId());
         }
+    }
+
+    private void initializePhotoPicker() {
+        Button photoPickerButtom = findViewById(R.id.photoPickerButton);
+        photoPickerButtom.setOnClickListener(this);
+    }
+
+    private void selectImageFromGalary() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, REQUEST_LOAD_IMG);
     }
 
     private void initializeFirebase() {
@@ -108,6 +133,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.signoutButton:
                 signOut();
                 break;
+            case R.id.photoPickerButton:
+                selectImageFromGalary();
+                break;
         }
     }
 
@@ -140,7 +168,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     public void redirectToLoginPage() {
         Intent intent = new Intent(this, LoginActivity.class);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, GOOGLE_SIGN_IN_REQUEST);
     }
 
     @Override
@@ -148,12 +176,58 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         if (data == null) {
             return;
         }
+        switch(requestCode) {
+            case GOOGLE_SIGN_IN_REQUEST:
+                handleSignInActivityResult(data);
+                break;
+            case REQUEST_LOAD_IMG:
+                handleImageLoadActivityResult(data);
+                break;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void handleImageLoadActivityResult(Intent data) {
+        try {
+            final Uri imageUri = data.getData();
+            final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+            byte imageInByte[] =compressImage(selectedImage);
+
+            //save selected image in sqlite db
+            final User dummyUser = new User("user_name",
+                    "email_id", "college_Id", imageInByte);
+            SQLiteHelper sqLiteHelper = SQLiteHelper.getInstance(this);
+            sqLiteHelper.addOrUpdateUser(dummyUser);
+
+            ImageView image_view = findViewById(R.id.imageView);
+            image_view.setImageBitmap(deCompressImage(imageInByte));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Something went wrong when selecting image", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private byte[] compressImage(Bitmap image) {
+        // convert bitmap to byte
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        return stream.toByteArray();
+    }
+
+    private Bitmap deCompressImage(byte[] imageInByte) {
+        //convert byte to bitmap take from contact class
+        ByteArrayInputStream imageStream = new ByteArrayInputStream(imageInByte);
+        return BitmapFactory.decodeStream(imageStream);
+    }
+
+    private void handleSignInActivityResult(Intent data) {
         final String userName = data.getStringExtra(LoginActivity.USER_NAME);
         final String email = data.getStringExtra(LoginActivity.EMAIL);
         final String imageUri = data.getStringExtra(LoginActivity.IMAGE_URL);
         userInformation = new UserInformation(userName, email, imageUri);
         displayAccountDetails(userInformation);
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void displayAccountDetails(final UserInformation userInformation) {
