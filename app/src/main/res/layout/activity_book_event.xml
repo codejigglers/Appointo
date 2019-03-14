@@ -91,7 +91,7 @@
                  android:tint="#9696A2"
                  android:layout_weight="1.5"/>
 
-      <EditText
+      <TextView
           android:layout_marginLeft="20dp"
           android:layout_width="0dp"
           android:id="@+id/professor"
