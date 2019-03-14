@@ -60,7 +60,6 @@
     </activity>
     <activity android:name=".CalenderActivity">
     </activity>
-    <activity android:name=".MainActivity"/>
     <activity android:name=".ProfileActivity"/>
     <activity android:name=".AddOrEditCalendarActivity"/>
 

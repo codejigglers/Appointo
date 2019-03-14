@@ -96,7 +96,7 @@ public final class CalendarSampleActivity extends AppCompatActivity implements A
 
   private static final Level LOGGING_LEVEL = Level.OFF;
 
-  private static final String PREF_ACCOUNT_NAME = "accountName";
+  private static final String PREF_ACCOUNT_NAME = "vardan";
 
   static final String TAG = "CalendarSampleActivity";
 
@@ -247,7 +247,7 @@ public final class CalendarSampleActivity extends AppCompatActivity implements A
     credential =
         GoogleAccountCredential.usingOAuth2(this, scopes);
     final SharedPreferences settings = getPreferences(Context.MODE_PRIVATE);
-    credential.setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME, null));
+    credential.setSelectedAccountName(settings.getString(PREF_ACCOUNT_NAME, "vardaan.gupta27@gmail.com"));
     // Calendar client
     client = new com.google.api.services.calendar.Calendar.Builder(
         transport, jsonFactory, credential).setApplicationName("Google-CalendarAndroidSample/1.0")
