@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
@@ -29,10 +30,17 @@ public class ProfileActivity extends AppCompatActivity {
     setContentView(R.layout.profile);
     fullName = findViewById(R.id.fullName);
     email = findViewById(R.id.email);
-    collegeId = findViewById(R.id.collegeId);
+    collegeId = findViewById(R.id.cancel);
     imageView = findViewById(R.id.imageView10);
     updateData();
+    collegeId.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        finish();
+      }
+    });
   }
+
 
   public void updateData() {
     GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());

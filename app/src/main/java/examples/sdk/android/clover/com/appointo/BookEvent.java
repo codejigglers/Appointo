@@ -11,6 +11,7 @@ import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -29,7 +30,10 @@ public class BookEvent extends AppCompatActivity {
     static TextView selectDate;
     private List<ProfDataObject> profData;
     String email;
+    private TextView viewCalender;
     static Button confirmButton;
+    private ImageView backPressButton;
+    private Button cancelButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +54,31 @@ public class BookEvent extends AppCompatActivity {
         professor = findViewById(R.id.professor);
         selectDate = findViewById(R.id.selectDate);
         email = profData.get(0).getEmail();
+        backPressButton = findViewById(R.id.backPressButton);
+        cancelButton = findViewById(R.id.cancelButton);
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        backPressButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         professor.setText(email);
+        viewCalender = findViewById(R.id.viewCalender);
+        viewCalender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startCalenderActivity();
+            }
+        });
 
         confirmButton = findViewById(R.id.confirmButton);
 
@@ -99,7 +127,7 @@ public class BookEvent extends AppCompatActivity {
         String descrip = description.getText().toString();
         String start = startTime.getText().toString();
         String end = endTime.getText().toString();
-        String title = "APPOINTO: Appointment with " + m.email;
+        String title = "APPOINTO: Appointment with " + profData.get(0).getName();
         String date = selectDate.getText().toString();
 
         Intent intent = new Intent(BookEvent.this, CalendarSampleActivity.class);
@@ -108,7 +136,7 @@ public class BookEvent extends AppCompatActivity {
         intent.putExtra(Intents.START_TIME, start);
         intent.putExtra(Intents.END_TIME, end);
         intent.putExtra(Intents.TITLE, title);
-        intent.putExtra(Intents.EMAIL, m.email);
+        intent.putExtra(Intents.EMAIL, profData.get(0).getEmail());
         startActivity(intent);
     }
 
@@ -278,5 +306,10 @@ public class BookEvent extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    public void startCalenderActivity() {
+        Intent intent = new Intent(BookEvent.this, WebViewActivity.class);
+        startActivity(intent);
     }
 }

@@ -8,6 +8,7 @@ public class AppointmentModel {
   String date;
   String day;
   String id;
+  String description;
 
   public String getId() {
     return id;

@@ -87,6 +87,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -369,6 +370,12 @@ public final class CalendarSampleActivity extends AppCompatActivity implements A
                         item.name = "";
                     }
 
+                    try{
+                        item.description = e.getDescription();
+                    } catch (Exception m) {
+                        item.description = "";
+                    }
+
                     try {
                         item.setTime(e.getStart().getDateTime().toString().substring(11, 16).concat("-").concat(e.getEnd().getDateTime().toString().substring(11, 16)));
                         String s = item.getTime();
@@ -416,6 +423,28 @@ public final class CalendarSampleActivity extends AppCompatActivity implements A
         if (data.size() > 0) {
             noAppointmentLayout.setVisibility(View.GONE);
             appointmentLayout.setVisibility(View.VISIBLE);
+            data.sort(new Comparator<AppointmentModel>() {
+                @Override
+                public int compare(AppointmentModel o1, AppointmentModel o2) {
+                    for(int i = 0; i< o1.date.length(); i++) {
+                        if(o1.date.charAt(i) > o2.date.charAt(i)) {
+                            return 1;
+                        } else if (o1.date.charAt(i) < o2.date.charAt(i)) {
+                            return -1;
+                        }
+                    }
+
+                    for(int i = 0; i< o1.time.substring(0,5).length(); i++) {
+                        if(o1.time.charAt(i) > o2.time.charAt(i)) {
+                            return 1;
+                        } else if (o1.time.charAt(i) < o2.time.charAt(i)) {
+                            return -1;
+                        }
+                    }
+
+                    return 0;
+                }
+            });
             AppointmentAdapter appointmentAdapter = new AppointmentAdapter(data, this, profDataMap);
             appointmentRv.setLayoutManager(new LinearLayoutManager(this));
             appointmentRv.setAdapter(appointmentAdapter);

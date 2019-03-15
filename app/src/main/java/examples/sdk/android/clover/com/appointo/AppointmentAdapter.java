@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -44,17 +48,34 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
   }
 
   @Override
-  public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+  public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
     final AppointmentModel element = data.get(i);
     viewHolder.date.setText(element.date);
     viewHolder.time.setText(element.time);
-    viewHolder.name.setText(profData.get(element.name).name);
-    viewHolder.day.setText(element.day);
+    viewHolder.name.setText(profData.get(element.name).email);
+    viewHolder.day.setText(profData.get(element.name).name);
     appCompatActivity.setImage(profData.get(element.name).getImageUrl(), viewHolder.imageView);
     viewHolder.delete.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         appCompatActivity.onDeletePress(element.getId());
+      }
+    });
+    viewHolder.descriptionButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        AppCompatActivity appCompat = (AppCompatActivity)  appCompatActivity;
+        FragmentTransaction ft = appCompat.getSupportFragmentManager().beginTransaction();
+        Fragment prev = appCompat.getSupportFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+          ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+        DialogFragment dialogFragment = new DescriptionFragment();
+        Bundle args = new Bundle();
+        args.putString("num", element.description);
+        dialogFragment.setArguments(args);
+        dialogFragment.show(ft, "dialog");
       }
     });
 
@@ -86,6 +107,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     ImageView imageView;
     TextView delete;
     TextView map;
+    TextView descriptionButton;
 
     public ViewHolder(@NonNull View itemView) {
       super(itemView);
@@ -96,6 +118,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
       day = itemView.findViewById(R.id.appDay);
       imageView = (ImageView) itemView.findViewById(R.id.imageView);
       delete = (TextView) itemView.findViewById(R.id.deleteButton);
+      descriptionButton = (TextView) itemView.findViewById(R.id.descButton);
     }
 
   }

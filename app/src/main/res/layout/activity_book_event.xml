@@ -8,7 +8,7 @@
 
   <LinearLayout android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:background="@color/colorPrimaryLight"
                 android:id="@+id/view"
                 app:layout_constraintTop_toTopOf="parent"
@@ -17,6 +17,7 @@
 
     <ImageView android:layout_width="wrap_content"
                android:layout_height="wrap_content"
+               android:id="@+id/backPressButton"
                android:src="@drawable/ic_left_arrow_main"
                android:layout_marginTop="20dp"
                android:layout_marginLeft="20dp"/>
@@ -58,7 +59,7 @@
           android:layout_width="0dp"
           android:layout_weight="10"
           android:layout_height="wrap_content"
-          android:hint="Events(vgupts@scu.edu)"/>
+          android:hint="Events"/>
     </LinearLayout>
   </android.support.v7.widget.CardView>
 
@@ -98,7 +99,15 @@
           android:layout_weight="10"
           android:layout_height="wrap_content"
           android:hint="Eskafi"/>
+
+      <TextView android:layout_width="0dp"
+                android:id="@+id/viewCalender"
+                android:layout_height="wrap_content"
+                android:text="Calender"
+                android:textColor="@color/colorPrimaryLight"
+                android:layout_weight="3"/>
     </LinearLayout>
+
   </android.support.v7.widget.CardView>
 
   <android.support.v7.widget.CardView
@@ -131,9 +140,10 @@
             android:layout_marginLeft="20dp"
             android:layout_width="0dp"
             android:id="@+id/selectDate"
+            android:textColor="@color/colorPrimaryLight"
             android:layout_weight="10"
             android:layout_height="wrap_content"
-            android:hint="Select Date"/>
+            android:text="Select Date"/>
       </LinearLayout>
 
       <LinearLayout
@@ -160,6 +170,7 @@
             android:id="@+id/startTime"
             android:layout_width="0dp"
             android:layout_weight="10"
+            android:textColor="@color/colorPrimaryLight"
             android:layout_height="wrap_content"
             android:text="--:--"/>
       </LinearLayout>
@@ -189,6 +200,7 @@
             android:layout_width="0dp"
             android:layout_weight="10"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryLight"
             android:text="--:--"/>
       </LinearLayout>
     </LinearLayout>
